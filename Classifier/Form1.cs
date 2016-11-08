@@ -69,7 +69,8 @@ namespace Classifier
             }
         }
 
-        private void trainHumansToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void trainHumansToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             List<double> trainLine;
             humanModel = new HumanModel();
@@ -77,7 +78,7 @@ namespace Classifier
             var allHumans = humanModel.GetAll();
 
             //саме навчання
-            if (false)
+            if (true)
             {
 
                 for (int i = 0; i < humanModel.Length; i++)
@@ -85,7 +86,7 @@ namespace Classifier
                     trainArray[i] = AuxiliaryFunctions.MakeTail(AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG), allHumans[i].IsHuman);
                 }
                 LogisticGradient lg = new LogisticGradient(trainArray[0].Count());
-                resultLine = lg.Train(trainArray, 1000, 0.01);
+                resultLine = lg.Train(trainArray, 1000000, 0.01);
                 AuxiliaryFunctions.WriteWeight(resultLine, "weight.txt");
             }
             //розпізнаю з БД

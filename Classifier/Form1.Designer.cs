@@ -34,6 +34,8 @@
             this.databasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addAllImagesToDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearHumanDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trainingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trainHumansToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,7 +43,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.databasesToolStripMenuItem});
+            this.databasesToolStripMenuItem,
+            this.trainingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(344, 24);
@@ -86,6 +89,21 @@
             this.clearHumanDBToolStripMenuItem.Text = "Clear HumanDB";
             this.clearHumanDBToolStripMenuItem.Click += new System.EventHandler(this.clearHumanDBToolStripMenuItem_Click);
             // 
+            // trainingsToolStripMenuItem
+            // 
+            this.trainingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.trainHumansToolStripMenuItem});
+            this.trainingsToolStripMenuItem.Name = "trainingsToolStripMenuItem";
+            this.trainingsToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.trainingsToolStripMenuItem.Text = "Trainings";
+            // 
+            // trainHumansToolStripMenuItem
+            // 
+            this.trainHumansToolStripMenuItem.Name = "trainHumansToolStripMenuItem";
+            this.trainHumansToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.trainHumansToolStripMenuItem.Text = "trainHumans";
+            this.trainHumansToolStripMenuItem.Click += new System.EventHandler(this.trainHumansToolStripMenuItem_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -109,6 +127,8 @@
         private System.Windows.Forms.ToolStripMenuItem makeGrayscaleAndResizingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addAllImagesToDBToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearHumanDBToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem trainingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem trainHumansToolStripMenuItem;
     }
 }
 
