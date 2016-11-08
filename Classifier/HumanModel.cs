@@ -8,6 +8,16 @@ namespace Classifier
 {
     class HumanModel
     {
+        public int Length
+        {
+            get
+            {
+                using (ClassifierEntities db = new ClassifierEntities())
+                {
+                    return db.Humans.Count();
+                }
+            }
+        }
         public string Insert(Human human)
         {
             try
@@ -84,12 +94,19 @@ namespace Classifier
                 db.Humans.RemoveRange(db.Humans);
                 db.SaveChanges();
 
-                return  "All items were successfully deleted";
+                return "All items were successfully deleted";
 
             }
             catch (Exception e)
             {
                 return "Error" + e;
+            }
+        }
+        public List<Human> GetAll()
+        {
+            using (ClassifierEntities db = new ClassifierEntities())
+            {
+                return db.Humans.ToList();
             }
         }
     }
