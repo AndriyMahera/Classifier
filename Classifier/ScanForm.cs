@@ -26,12 +26,20 @@ namespace Classifier
             int step = trackBar1.Value;
             
             Stopwatch stopwatch = Stopwatch.StartNew();
-
-
             ImageScan.ImageScanning(image, step);
 
             stopwatch.Stop();
             label1.Text = "time: "+stopwatch.ElapsedMilliseconds/1000+" sec";
+
+            Pen myPen = new Pen(Color.Blue, 2);
+            foreach (Rectangle rect in ImageScan.rectangleList)
+            {
+                using (Graphics myGraphics = Graphics.FromImage(image))
+                    myGraphics.DrawRectangle(myPen, rect);
+            }
+
+            pictureBox1.Refresh();
+
         }
     }
 }

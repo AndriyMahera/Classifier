@@ -102,8 +102,6 @@ namespace Classifier
                 }
             }
         }
-
-<<<<<<< HEAD
         private void testImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             double[] weight = AuxiliaryFunctions.ReadWeight("weight.txt");
@@ -116,9 +114,10 @@ namespace Classifier
                     hog.ProcessImage(new Bitmap(fileName));
                     line = AuxiliaryFunctions.ToOneLine(hog.Histograms);
                     LogisticGradient lg = new LogisticGradient(line.Length);
-                    double result = lg.ComputeOutput(line,weight);
+                    double result = lg.ComputeOutput(line, weight);
                 }
-=======
+            }
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             string filename;
@@ -127,8 +126,6 @@ namespace Classifier
                 filename = openFileDialog1.FileName;
                 ScanForm scanForm = new ScanForm(filename);
                 scanForm.Show();
->>>>>>> 953d4b9c6acb9eaffaf35bea4ca1d3ed0a513aab
-
             }
         }
 

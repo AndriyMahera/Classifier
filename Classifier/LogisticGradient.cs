@@ -108,7 +108,9 @@ namespace Classifier
             z += weights[0]; // the b0 constant
             for (int i = 0; i < weights.Length - 1; ++i) // data might include Y
                 z += (weights[i + 1] * dataItem[i]); // skip first weight
-            return 1.0 / (1.0 + Math.Exp(-z));
+            double k = Math.Exp(-z);
+            double a = (double)1.0 / (double)(1.0 + k);
+            return a;
         }
 
         private int ComputeDependent(double[] dataItem, double[] weights)

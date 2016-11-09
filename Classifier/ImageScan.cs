@@ -11,11 +11,12 @@ namespace Classifier
 {
     class ImageScan
     {
+        public static List<Rectangle> rectangleList = new List<Rectangle>();
         public static void ImageScanning(System.Drawing.Image image, int step)
         {
+            rectangleList.Clear();
             Bitmap grayscaleImage = ImageFunctions.MakeGrayscale3((Bitmap)image);
             grayscaleImage = ImageFunctions.ContrastStretch(grayscaleImage);
-
 
             AllPassesOfWindow(grayscaleImage, step);
         }
@@ -48,17 +49,27 @@ namespace Classifier
                     hog.ProcessImage(newImage);
                     double[,][] hogHistogram = hog.Histograms;
 
-                    CompareHOG(hogHistogram);
+                    double t = CompareHOG(hogHistogram);
+                    if (t>0.8)
+                    {
+                        rectangleList.Add(cropRect);
+                    }
+                    Console.WriteLine(t+"");
+
                 }
             }
         }
 
-        public static void CompareHOG(object hogHist)
+        public static double CompareHOG(object hogHist)
         {
             double[,][] hogHistogram = (double[,][])hogHist;
+            double[] weight = AuxiliaryFunctions.ReadWeight("weight.txt");
 
-            //compare code
+            double[] line = AuxiliaryFunctions.ToOneLine(hogHistogram);
+            LogisticGradient lg = new LogisticGradient(line.Length);
 
+
+            return lg.ComputeOutput(line, weight);
         }
     }
 }
