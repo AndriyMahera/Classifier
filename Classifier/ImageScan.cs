@@ -11,34 +11,34 @@ namespace Classifier
 {
     class ImageScan
     {
-        public static void ImageScanning(string path)
+        public static void ImageScanning(System.Drawing.Image image, int step)
         {
-            System.Drawing.Image image = System.Drawing.Image.FromFile(@path);
             Bitmap grayscaleImage = ImageFunctions.MakeGrayscale3((Bitmap)image);
             grayscaleImage = ImageFunctions.ContrastStretch(grayscaleImage);
 
-            AllPassesOfWindow(grayscaleImage);
+
+            AllPassesOfWindow(grayscaleImage, step);
         }
-        public static void AllPassesOfWindow(System.Drawing.Image src)
+        public static void AllPassesOfWindow(System.Drawing.Image src, int step)
         {
             int width = 64;
             int height = 128;
             while (width < src.Width && height < src.Height)
             {
-                OnePassOfWindow(src, width, height);
+                OnePassOfWindow(src, width, height, step);
                 width=(int)Math.Round(width*1.5);
                 height = (int)Math.Round(height * 1.5);
             }
         }
-        public static void OnePassOfWindow(System.Drawing.Image src, int width, int height)
+        public static void OnePassOfWindow(System.Drawing.Image src, int width, int height, int step)
         {
             Bitmap bmpImage = new Bitmap(src);
             Rectangle cropRect = new Rectangle();
             Bitmap newImage = new Bitmap(64, 128);
 
-            for (int i = 0; i < src.Height - height; i+=height/4)
+            for (int i = 0; i < src.Height - height; i+=step)
             {
-                for (int j = 0; j < src.Width - width; j+=width/4)
+                for (int j = 0; j < src.Width - width; j+=step)
                 {
                     cropRect = new Rectangle(j, i, width, height);
                     newImage = bmpImage.Clone(cropRect, bmpImage.PixelFormat);

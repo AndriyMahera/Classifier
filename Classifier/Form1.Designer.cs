@@ -36,6 +36,8 @@
             this.clearHumanDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trainingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trainHumansToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -100,15 +102,31 @@
             // trainHumansToolStripMenuItem
             // 
             this.trainHumansToolStripMenuItem.Name = "trainHumansToolStripMenuItem";
-            this.trainHumansToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.trainHumansToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.trainHumansToolStripMenuItem.Text = "trainHumans";
             this.trainHumansToolStripMenuItem.Click += new System.EventHandler(this.trainHumansToolStripMenuItem_Click_1);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "testImage";
+            this.openFileDialog1.Filter = "Image files|*.jpg; *.png; *.jpeg; *.gif; *.bmp;";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(102, 94);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(144, 71);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Choose image";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(344, 289);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
@@ -129,6 +147,8 @@
         private System.Windows.Forms.ToolStripMenuItem clearHumanDBToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trainingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trainHumansToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

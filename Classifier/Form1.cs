@@ -103,6 +103,18 @@ namespace Classifier
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string filename;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                filename = openFileDialog1.FileName;
+                ScanForm scanForm = new ScanForm(filename);
+                scanForm.Show();
+
+            }
+        }
+
         private void clearHumanDBToolStripMenuItem_Click(object sender, EventArgs e)
         {
             humanModel = new HumanModel();
