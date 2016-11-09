@@ -78,15 +78,15 @@ namespace Classifier
             var allHumans = humanModel.GetAll();
 
             //саме навчання
-            if (true)
+            if (false)
             {
 
                 for (int i = 0; i < humanModel.Length; i++)
                 {
                     trainArray[i] = AuxiliaryFunctions.MakeTail(AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG), allHumans[i].IsHuman);
                 }
-                LogisticGradient lg = new LogisticGradient(trainArray[0].Count());
-                resultLine = lg.Train(trainArray, 1000000, 0.01);
+                LogisticGradient lg = new LogisticGradient(trainArray[0].Count()-1);
+                resultLine = lg.Train(trainArray, 20000, 0.01);
                 AuxiliaryFunctions.WriteWeight(resultLine, "weight.txt");
             }
             //розпізнаю з БД
@@ -96,10 +96,28 @@ namespace Classifier
                 double[] weight = AuxiliaryFunctions.ReadWeight("weight.txt");
                 for (int i = 0; i < checkArray.Length; i++)
                 {
-                    double[] data = AuxiliaryFunctions.MakeTail(AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG), allHumans[i].IsHuman);
+                    double[] data = AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG);
                     LogisticGradient lg = new LogisticGradient(data.Length);
-                    checkArray[i] = (int)lg.ComputeOutput(data, weight);
+                    checkArray[i] = lg.ComputeOutput(data, weight);
                 }
+            }
+        }
+
+        private void testImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            double[] weight = AuxiliaryFunctions.ReadWeight("weight.txt");
+            hog = new HistogramsOfOrientedGradients();
+            FBD = new FolderBrowserDialog();
+            if (FBD.ShowDialog() == DialogResult.OK)
+            {
+                foreach (string fileName in Directory.GetFiles(FBD.SelectedPath))
+                {
+                    hog.ProcessImage(new Bitmap(fileName));
+                    line = AuxiliaryFunctions.ToOneLine(hog.Histograms);
+                    LogisticGradient lg = new LogisticGradient(line.Length);
+                    double result = lg.ComputeOutput(line,weight);
+                }
+
             }
         }
 

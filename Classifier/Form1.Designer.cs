@@ -36,6 +36,7 @@
             this.clearHumanDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trainingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trainHumansToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -92,7 +93,8 @@
             // trainingsToolStripMenuItem
             // 
             this.trainingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.trainHumansToolStripMenuItem});
+            this.trainHumansToolStripMenuItem,
+            this.testImageToolStripMenuItem});
             this.trainingsToolStripMenuItem.Name = "trainingsToolStripMenuItem";
             this.trainingsToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
             this.trainingsToolStripMenuItem.Text = "Trainings";
@@ -103,6 +105,13 @@
             this.trainHumansToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.trainHumansToolStripMenuItem.Text = "trainHumans";
             this.trainHumansToolStripMenuItem.Click += new System.EventHandler(this.trainHumansToolStripMenuItem_Click_1);
+            // 
+            // testImageToolStripMenuItem
+            // 
+            this.testImageToolStripMenuItem.Name = "testImageToolStripMenuItem";
+            this.testImageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.testImageToolStripMenuItem.Text = "test image";
+            this.testImageToolStripMenuItem.Click += new System.EventHandler(this.testImageToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -129,6 +138,7 @@
         private System.Windows.Forms.ToolStripMenuItem clearHumanDBToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trainingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trainHumansToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testImageToolStripMenuItem;
     }
 }
 
