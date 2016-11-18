@@ -29,7 +29,7 @@ namespace Classifier
             for (int i = 0; i < sequence.Length; ++i)
                 sequence[i] = i;
 
-            while (epoch < maxEpochs)
+            while (epoch < maxEpochs-900)
             {
                 ++epoch;
 

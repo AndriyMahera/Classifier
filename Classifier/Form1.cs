@@ -9,6 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Accord.Imaging;
+using Accord.MachineLearning.VectorMachines.Learning;
+using Accord.Statistics.Kernels;
+using Accord.MachineLearning.VectorMachines;
 
 namespace Classifier
 {
@@ -17,7 +20,7 @@ namespace Classifier
         private FolderBrowserDialog FBD;
         private Bitmap bitmap;
         private HistogramsOfOrientedGradients hog;
-        private double[] line, resultLine;
+        private double[] line, resultLine, outputArray;
         private byte[] byteArray;
         private HumanModel humanModel;
         private Human human;
@@ -58,7 +61,7 @@ namespace Classifier
                     if (filename.Contains("image_human"))
                         human.IsHuman = 1;
                     else
-                        human.IsHuman = 0;
+                        human.IsHuman = -1;
                     line = AuxiliaryFunctions.ToOneLine(hog.Histograms);
                     byteArray = AuxiliaryFunctions.DoubleArrayToByte(line);
                     human.HOG = byteArray;
@@ -75,18 +78,29 @@ namespace Classifier
             List<double> trainLine;
             humanModel = new HumanModel();
             trainArray = new double[humanModel.Length][];
+            outputArray = new double[humanModel.Length];
             var allHumans = humanModel.GetAll();
 
             //саме навчання
-            if (false)
+            if (true)
             {
 
                 for (int i = 0; i < humanModel.Length; i++)
                 {
-                    trainArray[i] = AuxiliaryFunctions.MakeTail(AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG), allHumans[i].IsHuman);
+                    //double[] item = AuxiliaryFunctions.NormalizeHistogram(AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG));
+                    trainArray[i] = AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG);
+                    outputArray[i] = allHumans[i].IsHuman;
                 }
-                LogisticGradient lg = new LogisticGradient(trainArray[0].Count()-1);
-                resultLine = lg.Train(trainArray, 20000, 0.01);
+                var teacher = new SequentialMinimalOptimization<Gaussian>()
+                {
+                    UseComplexityHeuristic = true,
+                    UseKernelEstimation = true // Estimate the kernel from the data
+                };
+                SupportVectorMachine<Gaussian> svm = teacher.Learn(trainArray, outputArray);
+                //LogisticGradient lg = new LogisticGradient(trainArray[0].Count()-1);
+                //resultLine = lg.Train(trainArray, 1000, 0.1);
+
+                resultLine = svm.Weights;
                 AuxiliaryFunctions.WriteWeight(resultLine, "weight.txt");
             }
             //розпізнаю з БД
