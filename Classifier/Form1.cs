@@ -102,6 +102,7 @@ namespace Classifier
 
                 resultLine = svm.Weights;
                 AuxiliaryFunctions.WriteWeight(resultLine, "weight.txt");
+                AuxiliaryFunctions.MakeSerialization(svm,"SVM.xml");
             }
             //розпізнаю з БД
             else

@@ -16,6 +16,7 @@ namespace Classifier
 {
     class ImageScan
     {
+        public static SupportVectorMachine<Gaussian> SVM = AuxiliaryFunctions.MakeDeserialization("SVM.xml");
         public static List<Rectangle> rectangleList = new List<Rectangle>();
         public static void ImageScanning(System.Drawing.Image image, int step)
         {
@@ -29,6 +30,7 @@ namespace Classifier
         {
             int width = 64;
             int height = 128;
+            
             while (width < src.Width && height < src.Height)
             {
                 OnePassOfWindow(src, width, height, step);
@@ -53,7 +55,7 @@ namespace Classifier
                     HistogramsOfOrientedGradients hog = new HistogramsOfOrientedGradients();
                     hog.ProcessImage(newImage);
                     double[,][] hogHistogram = hog.Histograms;
-
+                    
                     bool t = CompareHOG(hogHistogram);
                     if (t)
                     {
@@ -85,24 +87,27 @@ namespace Classifier
 
             double[] line = AuxiliaryFunctions.ToOneLine(hogHistogram);
 
+            
+            bool isHuman = SVM.Decide(line);
+
 
             //дикий бидлокод і хз чи адекватно паше
-            var teacher = new SequentialMinimalOptimization<Gaussian>()
-            {
-                UseComplexityHeuristic = true,
-                UseKernelEstimation = true // Estimate the kernel from the data
-            };
-            double[][] inputs2 = new double[4][];
-            inputs2[0] = new[] { 1.0, 4 };
-            inputs2[1] = new[] { 6.0, 8 };
-            inputs2[2] = new[] { 60.0, 78 };
-            inputs2[3] = new[] { 60.0, 90 };
+            //var teacher = new SequentialMinimalOptimization<Gaussian>()
+            //{
+            //    UseComplexityHeuristic = true,
+            //    UseKernelEstimation = true // Estimate the kernel from the data
+            //};
+            //double[][] inputs2 = new double[4][];
+            //inputs2[0] = new[] { 1.0, 4 };
+            //inputs2[1] = new[] { 6.0, 8 };
+            //inputs2[2] = new[] { 60.0, 78 };
+            //inputs2[3] = new[] { 60.0, 90 };
 
-            double[] outputs2 = { 1, 1, 0, 0 };
+            //double[] outputs2 = { 1, 1, 0, 0 };
 
-            SupportVectorMachine<Gaussian> svm = teacher.Learn(inputs2, outputs2);
-            svm.Weights = weight;
-            bool isHuman = svm.Decide(line);
+            //SupportVectorMachine<Gaussian> svm = teacher.Learn(inputs2, outputs2);
+            //svm.Weights = weight;
+            //bool isHuman = svm.Decide(line);
 
             return isHuman;
         }
