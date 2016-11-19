@@ -55,9 +55,18 @@ namespace Classifier
                     HistogramsOfOrientedGradients hog = new HistogramsOfOrientedGradients();
                     hog.ProcessImage(newImage);
                     double[,][] hogHistogram = hog.Histograms;
+<<<<<<< HEAD
                     
+=======
+
+<<<<<<< HEAD
+                    double t = CompareHOG(hogHistogram);
+                    if (t<0.8)
+=======
+>>>>>>> fixmistake
                     bool t = CompareHOG(hogHistogram);
                     if (t)
+>>>>>>> f815ce27d4e289a5274b03c81ed236585617f4a7
                     {
                         rectangleList.Add(cropRect);
                     }

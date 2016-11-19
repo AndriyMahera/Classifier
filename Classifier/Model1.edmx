@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище ClassifierModel" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ClassifierModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Humans">
           <Key>
             <PropertyRef Name="ID" />
@@ -13,7 +13,7 @@
           <Property Name="HOG" Type="varbinary(max)" Nullable="false" />
           <Property Name="IsHuman" Type="int" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="Хранилище ClassifierModelContainer">
+        <EntityContainer Name="ClassifierModelStoreContainer">
           <EntitySet Name="Humans" EntityType="Self.Humans" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema>
@@ -37,7 +37,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище ClassifierModelContainer" CdmEntityContainer="ClassifierEntities">
+        <EntityContainerMapping StorageEntityContainer="ClassifierModelStoreContainer" CdmEntityContainer="ClassifierEntities">
           <EntitySetMapping Name="Humans">
             <EntityTypeMapping TypeName="ClassifierModel.Human">
               <MappingFragment StoreEntitySet="Humans">
@@ -64,7 +64,7 @@
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
