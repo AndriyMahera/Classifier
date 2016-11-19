@@ -6,6 +6,11 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Accord.Statistics.Kernels;
+using Accord.IO;
+using Accord.Math;
+using Accord.MachineLearning.VectorMachines;
+using Accord.MachineLearning.VectorMachines.Learning;
 
 namespace Classifier
 {
@@ -49,8 +54,13 @@ namespace Classifier
                     hog.ProcessImage(newImage);
                     double[,][] hogHistogram = hog.Histograms;
 
+<<<<<<< HEAD
                     double t = CompareHOG(hogHistogram);
                     if (t<0.8)
+=======
+                    bool t = CompareHOG(hogHistogram);
+                    if (t)
+>>>>>>> f815ce27d4e289a5274b03c81ed236585617f4a7
                     {
                         rectangleList.Add(cropRect);
                     }
@@ -66,10 +76,40 @@ namespace Classifier
             double[] weight = AuxiliaryFunctions.ReadWeight("weight.txt");
 
             double[] line = AuxiliaryFunctions.ToOneLine(hogHistogram);
+
+
             LogisticGradient lg = new LogisticGradient(line.Length);
 
 
             return lg.ComputeOutput(line, weight);
+        }
+        public static bool CompareHOG(double[,][] hogHist)
+        {
+            double[,][] hogHistogram = hogHist;
+            double[] weight = AuxiliaryFunctions.ReadWeight("weight.txt");
+
+            double[] line = AuxiliaryFunctions.ToOneLine(hogHistogram);
+
+
+            //дикий бидлокод і хз чи адекватно паше
+            var teacher = new SequentialMinimalOptimization<Gaussian>()
+            {
+                UseComplexityHeuristic = true,
+                UseKernelEstimation = true // Estimate the kernel from the data
+            };
+            double[][] inputs2 = new double[4][];
+            inputs2[0] = new[] { 1.0, 4 };
+            inputs2[1] = new[] { 6.0, 8 };
+            inputs2[2] = new[] { 60.0, 78 };
+            inputs2[3] = new[] { 60.0, 90 };
+
+            double[] outputs2 = { 1, 1, 0, 0 };
+
+            SupportVectorMachine<Gaussian> svm = teacher.Learn(inputs2, outputs2);
+            svm.Weights = weight;
+            bool isHuman = svm.Decide(line);
+
+            return isHuman;
         }
     }
 }

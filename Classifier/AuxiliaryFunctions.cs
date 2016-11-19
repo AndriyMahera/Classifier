@@ -57,5 +57,10 @@ namespace Classifier
             double[] temp = { tail };
             return Enumerable.Concat(array, temp).ToArray();
         }
+        public static double[] NormalizeHistogram(double[] array)
+        {
+            double max = array.Select(x => Math.Abs(x)).Max();
+            return array.Select(x => x / max * 10.0).ToArray();
+        }
     }
 }
