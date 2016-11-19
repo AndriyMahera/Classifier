@@ -50,7 +50,7 @@ namespace Classifier
                     double[,][] hogHistogram = hog.Histograms;
 
                     double t = CompareHOG(hogHistogram);
-                    if (t>0.8)
+                    if (t<0.8)
                     {
                         rectangleList.Add(cropRect);
                     }
