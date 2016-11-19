@@ -1,0 +1,9 @@
+diff a/Classifier/Form1.cs b/Classifier/Form1.cs	(rejected hunks)
+@@ -20,6 +20,7 @@
+         private FolderBrowserDialog FBD;
+         private Bitmap bitmap;
+         private HistogramsOfOrientedGradients hog;
++        private double[] line, resultLine, outputArray;
+         private byte[] byteArray;
+         private HumanModel humanModel;
+         private Human human;
