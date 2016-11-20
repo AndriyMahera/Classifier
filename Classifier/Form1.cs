@@ -87,6 +87,13 @@ namespace Classifier
                     trainArray[i] = AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG);
                     outputArray[i] = allHumans[i].IsHuman;
                 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+                LogisticGradient lg = new LogisticGradient(trainArray[0].Count()-1);
+                resultLine = lg.Train(trainArray, 1000, 0.01);
+=======
+>>>>>>> a182df113b96cedc5ee47473fe4d05dd10209cc9
                 var teacher = new SequentialMinimalOptimization<Gaussian>()
                 {
                     UseComplexityHeuristic = true,
@@ -97,7 +104,11 @@ namespace Classifier
                 //resultLine = lg.Train(trainArray, 1000, 0.1);
 
                 resultLine = svm.Weights;
+<<<<<<< HEAD
 
+=======
+>>>>>>> f815ce27d4e289a5274b03c81ed236585617f4a7
+>>>>>>> a182df113b96cedc5ee47473fe4d05dd10209cc9
                 AuxiliaryFunctions.WriteWeight(resultLine, "weight.txt");
                 AuxiliaryFunctions.MakeSerialization(svm,"SVM.xml");
             }
