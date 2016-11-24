@@ -11,6 +11,7 @@ using Accord.IO;
 using Accord.Math;
 using Accord.MachineLearning.VectorMachines;
 using Accord.MachineLearning.VectorMachines.Learning;
+using System.Numerics;
 
 namespace Classifier
 {
@@ -18,6 +19,12 @@ namespace Classifier
     {
         public static SupportVectorMachine<Gaussian> SVM = AuxiliaryFunctions.MakeDeserialization("SVM.xml");
         public static List<Rectangle> rectangleList = new List<Rectangle>();
+        public static List<double> percentage = new List<double>();
+        public static List<Tuple<int,double, bool,Rectangle>> tuple = new List<Tuple<int,double, bool,Rectangle>>();
+        public static Rectangle cropRect;
+
+        public static int Counter = 0;
+
         public static void ImageScanning(System.Drawing.Image image, int step)
         {
             rectangleList.Clear();
@@ -34,16 +41,22 @@ namespace Classifier
             while (width < src.Width && height < src.Height)
             {
                 OnePassOfWindow(src, width, height, step);
+                
                 width=(int)Math.Round(width*1.5);
                 height = (int)Math.Round(height * 1.5);
             }
+            tuple = tuple.OrderByDescending(x => x.Item2).ToList();
+            AuxiliaryFunctions.WritePercentage(tuple.ToArray(), @"Output\percentage.txt");
+            rectangleList = tuple.Take(5).Select(x => x.Item4).ToList();
+            
         }
+
         public static void OnePassOfWindow(System.Drawing.Image src, int width, int height, int step)
         {
+            
             Bitmap bmpImage = new Bitmap(src);
-            Rectangle cropRect = new Rectangle();
+            cropRect = new Rectangle();
             Bitmap newImage = new Bitmap(64, 128);
-
             for (int i = 0; i < src.Height - height; i+=step)
             {
                 for (int j = 0; j < src.Width - width; j+=step)
@@ -52,6 +65,7 @@ namespace Classifier
                     newImage = bmpImage.Clone(cropRect, bmpImage.PixelFormat);
                     newImage = (Bitmap)ImageFunctions.ScaleImage(newImage, 64, 128);
 
+                    
                     HistogramsOfOrientedGradients hog = new HistogramsOfOrientedGradients();
                     hog.ProcessImage(newImage);
                     double[,][] hogHistogram = hog.Histograms;
@@ -59,55 +73,25 @@ namespace Classifier
                     if (t)
                     {
                         rectangleList.Add(cropRect);
+                        newImage.Save(@"Output\image_" + Counter + ".png");
                     }
-                    Console.WriteLine(t+"");
-
+                    Counter += 1;
                 }
             }
-        }
-
-        public static double CompareHOG(object hogHist)
-        {
-            double[,][] hogHistogram = (double[,][])hogHist;
-            double[] weight = AuxiliaryFunctions.ReadWeight("weight.txt");
-
-            double[] line = AuxiliaryFunctions.ToOneLine(hogHistogram);
-
-
-            LogisticGradient lg = new LogisticGradient(line.Length);
-
-
-            return lg.ComputeOutput(line, weight);
         }
         public static bool CompareHOG(double[,][] hogHist)
         {
             double[,][] hogHistogram = hogHist;
             double[] weight = AuxiliaryFunctions.ReadWeight("weight.txt");
-
-            double[] line = AuxiliaryFunctions.ToOneLine(hogHistogram);
-
-            
+            double[] line = AuxiliaryFunctions.ToOneLine(hogHistogram);  
+                     
             bool isHuman = SVM.Decide(line);
-
-
-            //дикий бидлокод і хз чи адекватно паше
-            //var teacher = new SequentialMinimalOptimization<Gaussian>()
-            //{
-            //    UseComplexityHeuristic = true,
-            //    UseKernelEstimation = true // Estimate the kernel from the data
-            //};
-            //double[][] inputs2 = new double[4][];
-            //inputs2[0] = new[] { 1.0, 4 };
-            //inputs2[1] = new[] { 6.0, 8 };
-            //inputs2[2] = new[] { 60.0, 78 };
-            //inputs2[3] = new[] { 60.0, 90 };
-
-            //double[] outputs2 = { 1, 1, 0, 0 };
-
-            //SupportVectorMachine<Gaussian> svm = teacher.Learn(inputs2, outputs2);
-            //svm.Weights = weight;
-            //bool isHuman = svm.Decide(line);
-
+            double percent = SVM.Probability(line);
+            if (isHuman)
+            {
+                tuple.Add(Tuple.Create(Counter, percent, isHuman,cropRect));
+            }
+            
 
             return isHuman;
         }

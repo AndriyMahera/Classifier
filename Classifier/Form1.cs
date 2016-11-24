@@ -20,7 +20,7 @@ namespace Classifier
         private FolderBrowserDialog FBD;
         private Bitmap bitmap;
         private HistogramsOfOrientedGradients hog;
-        private double[] line, resultLine,outputArray;
+        private double[] line, resultLine, outputArray;
         private byte[] byteArray;
         private HumanModel humanModel;
         private Human human;
@@ -34,17 +34,14 @@ namespace Classifier
         private void makeGrayscaleAndResizingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FBD = new FolderBrowserDialog();
-  
             if (FBD.ShowDialog() == DialogResult.OK)
             {
-                DirectoryInfo myFolder = new DirectoryInfo(FBD.SelectedPath);
                 ImageFunctions.ConvertImage(FBD.SelectedPath, @"E:\Output");
             }
         }
 
         private void addAllImagesToDBToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             FBD = new FolderBrowserDialog();
             if (FBD.ShowDialog() == DialogResult.OK)
             {
@@ -58,61 +55,36 @@ namespace Classifier
                     if (filename.Contains("image_human"))
                         human.IsHuman = 1;
                     else
-                        human.IsHuman = 0;
+                        human.IsHuman = -1;
                     line = AuxiliaryFunctions.ToOneLine(hog.Histograms);
                     byteArray = AuxiliaryFunctions.DoubleArrayToByte(line);
                     human.HOG = byteArray;
                     humanModel = new HumanModel();
                     humanModel.Insert(human);
                 }
-
             }
         }
-
-
         private void trainHumansToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            List<double> trainLine;
             humanModel = new HumanModel();
             trainArray = new double[humanModel.Length][];
             outputArray = new double[humanModel.Length];
             var allHumans = humanModel.GetAll();
 
-            //саме навчання
-            if (true)
+            for (int i = 0; i < humanModel.Length; i++)
             {
-                
-                for (int i = 0; i < humanModel.Length; i++)
-                {
-                    //double[] item = AuxiliaryFunctions.NormalizeHistogram(AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG));
-                    trainArray[i] = AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG);
-                    outputArray[i] = allHumans[i].IsHuman;
-                }
-                var teacher = new SequentialMinimalOptimization<Gaussian>()
-                {
-                    UseComplexityHeuristic = true,
-                    UseKernelEstimation = true // Estimate the kernel from the data
-                };
-                SupportVectorMachine<Gaussian> svm = teacher.Learn(trainArray, outputArray);
-                //LogisticGradient lg = new LogisticGradient(trainArray[0].Count()-1);
-                //resultLine = lg.Train(trainArray, 1000, 0.1);
-
-                resultLine = svm.Weights;
-                AuxiliaryFunctions.WriteWeight(resultLine, "weight.txt");
-                AuxiliaryFunctions.MakeSerialization(svm,"SVM.xml");
+                trainArray[i] = AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG);
+                outputArray[i] = allHumans[i].IsHuman;
             }
-            //розпізнаю з БД
-            else
+            var teacher = new SequentialMinimalOptimization<Gaussian>()
             {
-                double[] checkArray = new double[humanModel.Length];
-                double[] weight = AuxiliaryFunctions.ReadWeight("weight.txt");
-                for (int i = 0; i < checkArray.Length; i++)
-                {
-                    double[] data = AuxiliaryFunctions.ByteArrayToDouble(allHumans[i].HOG);
-                    LogisticGradient lg = new LogisticGradient(data.Length);
-                    checkArray[i] = lg.ComputeOutput(data, weight);
-                }
-            }
+                UseComplexityHeuristic = true,
+                UseKernelEstimation = true
+            };
+            SupportVectorMachine<Gaussian> svm = teacher.Learn(trainArray, outputArray);
+            resultLine = svm.Weights;
+            AuxiliaryFunctions.WriteWeight(resultLine, "weight.txt");
+            AuxiliaryFunctions.MakeSerialization(svm, "SVM3.xml");
         }
         private void testImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -140,7 +112,6 @@ namespace Classifier
                 scanForm.Show();
             }
         }
-
         private void clearHumanDBToolStripMenuItem_Click(object sender, EventArgs e)
         {
             humanModel = new HumanModel();

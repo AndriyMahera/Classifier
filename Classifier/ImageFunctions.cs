@@ -18,6 +18,7 @@ namespace Classifier
             {
                 System.Drawing.Image image = Image.FromFile(fileName);
                 image = ScaleImage(image, 64, 128);
+                //Bitmap grayscaleImage = (Bitmap)image;
                 Bitmap grayscaleImage = MakeGrayscale3((Bitmap)image);
                 grayscaleImage = ContrastStretch(grayscaleImage);
 
