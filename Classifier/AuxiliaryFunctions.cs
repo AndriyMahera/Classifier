@@ -25,7 +25,7 @@ namespace Classifier
         public double SigmaSquared { get; set; }
 
     }
-    class AuxiliaryFunctions
+    public class AuxiliaryFunctions
     {
         public static double[] ToOneLine(double[,][] hog)
         {
@@ -48,7 +48,7 @@ namespace Classifier
             List<double> list = new List<double>();
             for (int i = 0; i < bytes.Length; i += 8)
             {
-                list.Add(BitConverter.ToDouble(bytes.Skip(i).Take(8).ToArray(), 0));
+                list.Add(BitConverter.ToDouble(bytes.Skip(i).Take(8).ToArray(), 0)*0.01-10);
                 //list.Add(BitConverter.ToDouble(bytes.Skip(i).Take(8).ToArray(), 0)/100.0);
             }
             return list.ToArray();
@@ -140,6 +140,16 @@ namespace Classifier
             svmAfter.Kernel = g;
 
             return svmAfter;
+        }
+        public static void WritePercentage<C,T,K,A>(Tuple<C,T,K,A>[] elements,string path)
+        {
+            using (StreamWriter sw = new StreamWriter(path, false))
+            {
+                for(int i = 0; i < elements.Length; i++)
+                {
+                    sw.WriteLine(elements[i].Item1+"\t"+elements[i].Item2+"\t"+elements[i].Item3);
+                }
+            }
         }
     }
 }

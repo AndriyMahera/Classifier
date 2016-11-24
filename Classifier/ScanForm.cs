@@ -40,18 +40,6 @@ namespace Classifier
 
             pictureBox1.Refresh();
 
-
-            List<Rectangle> filteredRectList = Filtering.FilterData(ImageScan.rectangleList);
-            Pen myPen2 = new Pen(Color.Red, 5);
-            foreach (Rectangle rect in filteredRectList)
-            {
-                using (Graphics myGraphics = Graphics.FromImage(image))
-                    myGraphics.DrawRectangle(myPen2, rect);
-            }
-
-            pictureBox1.Refresh();
-
-
         }
     }
 }

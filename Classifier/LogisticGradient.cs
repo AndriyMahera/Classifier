@@ -107,7 +107,7 @@ namespace Classifier
             double z = 0.0;
             z += weights[0]; // the b0 constant
             for (int i = 0; i < weights.Length - 1; ++i) // data might include Y
-                z += (weights[i + 1] * (dataItem[i])); // skip first weight
+                z += (weights[i + 1] * (dataItem[i]*0.01-10)); // skip first weight
             double k = Math.Exp(-z);
             double a = (double)1.0 / (double)(1.0 + k);
             return a;
