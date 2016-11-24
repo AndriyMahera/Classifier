@@ -25,7 +25,7 @@ namespace Classifier
         public double SigmaSquared { get; set; }
 
     }
-    public class AuxiliaryFunctions
+    class AuxiliaryFunctions
     {
         public static double[] ToOneLine(double[,][] hog)
         {
@@ -140,16 +140,6 @@ namespace Classifier
             svmAfter.Kernel = g;
 
             return svmAfter;
-        }
-        public static void WritePercentage<C,T,K,A>(Tuple<C,T,K,A>[] elements,string path)
-        {
-            using (StreamWriter sw = new StreamWriter(path, false))
-            {
-                for(int i = 0; i < elements.Length; i++)
-                {
-                    sw.WriteLine(elements[i].Item1+"\t"+elements[i].Item2+"\t"+elements[i].Item3);
-                }
-            }
         }
     }
 }
