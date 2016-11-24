@@ -48,7 +48,7 @@ namespace Classifier
             List<double> list = new List<double>();
             for (int i = 0; i < bytes.Length; i += 8)
             {
-                list.Add(BitConverter.ToDouble(bytes.Skip(i).Take(8).ToArray(), 0)*0.01-10);
+                list.Add(BitConverter.ToDouble(bytes.Skip(i).Take(8).ToArray(), 0));
                 //list.Add(BitConverter.ToDouble(bytes.Skip(i).Take(8).ToArray(), 0)/100.0);
             }
             return list.ToArray();
