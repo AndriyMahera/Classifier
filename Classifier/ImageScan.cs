@@ -17,7 +17,7 @@ namespace Classifier
 {
     class ImageScan
     {
-        public static SupportVectorMachine<Gaussian> SVM = AuxiliaryFunctions.MakeDeserialization("SVM.xml");
+        public static SupportVectorMachine<Gaussian> SVM = AuxiliaryFunctions.MakeDeserialization("SVM_G.xml");
         public static List<Rectangle> rectangleList = new List<Rectangle>();
         public static List<double> percentage = new List<double>();
         public static List<Tuple<int,double, bool,Rectangle>> tuple = new List<Tuple<int,double, bool,Rectangle>>();
@@ -29,12 +29,15 @@ namespace Classifier
         {
             rectangleList.Clear();
             Bitmap grayscaleImage = ImageFunctions.MakeGrayscale3((Bitmap)image);
-            grayscaleImage = ImageFunctions.ContrastStretch(grayscaleImage);
+            grayscaleImage = ImageFunctions.ContrastStretch(grayscaleImage,0.02,0.01);
 
             AllPassesOfWindow(grayscaleImage, step);
         }
+
         public static void AllPassesOfWindow(System.Drawing.Image src, int step)
         {
+            tuple.Clear();
+            Counter = 0;
             int width = 64;
             int height = 128;
             
@@ -47,10 +50,9 @@ namespace Classifier
             }
             tuple = tuple.OrderByDescending(x => x.Item2).ToList();
             AuxiliaryFunctions.WritePercentage(tuple.ToArray(), @"Output\percentage.txt");
-            rectangleList = tuple.Take(5).Select(x => x.Item4).ToList();
             
         }
-
+        
         public static void OnePassOfWindow(System.Drawing.Image src, int width, int height, int step)
         {
             
@@ -64,8 +66,7 @@ namespace Classifier
                     cropRect = new Rectangle(j, i, width, height);
                     newImage = bmpImage.Clone(cropRect, bmpImage.PixelFormat);
                     newImage = (Bitmap)ImageFunctions.ScaleImage(newImage, 64, 128);
-
-                    
+                                       
                     HistogramsOfOrientedGradients hog = new HistogramsOfOrientedGradients();
                     hog.ProcessImage(newImage);
                     double[,][] hogHistogram = hog.Histograms;
@@ -82,17 +83,13 @@ namespace Classifier
         public static bool CompareHOG(double[,][] hogHist)
         {
             double[,][] hogHistogram = hogHist;
-            double[] weight = AuxiliaryFunctions.ReadWeight("weight.txt");
-            double[] line = AuxiliaryFunctions.ToOneLine(hogHistogram);  
-                     
-            bool isHuman = SVM.Decide(line);
+            double[] line = AuxiliaryFunctions.ToOneLine(hogHistogram);           
             double percent = SVM.Probability(line);
+            bool isHuman = percent>=0.5;
             if (isHuman)
             {
                 tuple.Add(Tuple.Create(Counter, percent, isHuman,cropRect));
-            }
-            
-
+            }           
             return isHuman;
         }
     }

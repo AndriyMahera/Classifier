@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Classifier.Program;
 
 namespace Classifier
 {
@@ -20,7 +21,9 @@ namespace Classifier
                 image = ScaleImage(image, 64, 128);
                 //Bitmap grayscaleImage = (Bitmap)image;
                 Bitmap grayscaleImage = MakeGrayscale3((Bitmap)image);
-                grayscaleImage = ContrastStretch(grayscaleImage);
+
+                
+                grayscaleImage = ContrastStretch(grayscaleImage,0.1,0.1);
 
                 grayscaleImage.Save(@pathOut + "\\_" + i + ".png", ImageFormat.Png);
                 i++;

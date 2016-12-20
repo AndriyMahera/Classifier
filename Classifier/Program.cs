@@ -6,8 +6,9 @@ using System.Windows.Forms;
 
 namespace Classifier
 {
-    static class Program
+    public static class Program
     {
+        public delegate double[] MyDelegate(double d1,double d2);
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>

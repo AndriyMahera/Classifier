@@ -12,18 +12,46 @@ using System.Xml.Serialization;
 namespace Classifier
 {
     [Serializable]
-    public class SVMData
+    public  class SVMKernelData
     {
-        public SVMData() { }
+        public SVMKernelData() { }
         public int NumberOfInputs { get; set; }
         public int NumberOfOutputs { get; set; }
         public double[][] SupportVectors { get; set; }
         public double Threshold { get; set; }
         public double[] Weights { get; set; }
+    }
+    [Serializable]
+    public class SVMGaussianData : SVMKernelData
+    {
+        public SVMGaussianData() { }
         public double Gamma { get; set; }
         public double Sigma { get; set; }
         public double SigmaSquared { get; set; }
-
+    }
+    [Serializable]
+    public class SVMDirichletData : SVMKernelData
+    {
+        public SVMDirichletData() { }
+        public int Dimension { get; set; }
+    }
+    [Serializable]
+    public class SVMBSplineData : SVMKernelData
+    {
+        public SVMBSplineData() { }
+        public int Order { get; set; }
+    }
+    [Serializable]
+    public class SVMQuadraticData : SVMKernelData
+    {
+        public SVMQuadraticData() { }
+        public double Constant { get; set; }
+    }
+    [Serializable]
+    public class SVMThinSplinePlateData : SVMKernelData
+    {
+        public SVMThinSplinePlateData() { }
+        public double Sigma { get; set; }
     }
     public class AuxiliaryFunctions
     {
@@ -48,8 +76,7 @@ namespace Classifier
             List<double> list = new List<double>();
             for (int i = 0; i < bytes.Length; i += 8)
             {
-                list.Add(BitConverter.ToDouble(bytes.Skip(i).Take(8).ToArray(), 0)*0.01-10);
-                //list.Add(BitConverter.ToDouble(bytes.Skip(i).Take(8).ToArray(), 0)/100.0);
+                list.Add(BitConverter.ToDouble(bytes.Skip(i).Take(8).ToArray(), 0));
             }
             return list.ToArray();
         }
@@ -97,9 +124,23 @@ namespace Classifier
             }
             return myObject;
         }
+        public static void WritePercentage<C, T, K, A>(Tuple<C, T, K, A>[] elements, string path)
+        {
+            using (StreamWriter sw = new StreamWriter(path, false))
+            {
+                for (int i = 0; i < elements.Length; i++)
+                {
+                    sw.WriteLine(elements[i].Item1 + "\t" + elements[i].Item2 + "\t" + elements[i].Item3);
+                }
+            }
+        }
+
+
+
+
         public static void MakeSerialization(SupportVectorMachine<Gaussian> svm, string path)
         {
-            SVMData data = new SVMData();
+            SVMGaussianData data = new SVMGaussianData();
             data.NumberOfInputs = svm.NumberOfInputs;
             data.NumberOfOutputs = svm.NumberOfOutputs;
             data.SupportVectors = svm.SupportVectors;
@@ -110,12 +151,15 @@ namespace Classifier
             data.Gamma = svm.Kernel.Gamma;
             Serialize(data, path);
         }
+
+
+
         public static SupportVectorMachine<Gaussian> MakeDeserialization(string path)
         {
             var teacher = new SequentialMinimalOptimization<Gaussian>()
             {
                 UseComplexityHeuristic = true,
-                UseKernelEstimation = true // Estimate the kernel from the data
+                UseKernelEstimation = true
             };
             double[][] inputs2 = new double[4][];
             inputs2[0] = new[] { 1.0, 4 };
@@ -126,7 +170,7 @@ namespace Classifier
             double[] outputs2 = { 1, 1, 0, 0 };
 
             SupportVectorMachine<Gaussian> svmAfter = teacher.Learn(inputs2, outputs2);
-            SVMData dataAfter = Deserialize<SVMData>(path);
+            SVMGaussianData dataAfter = Deserialize<SVMGaussianData>(path);
 
             svmAfter.NumberOfInputs = dataAfter.NumberOfInputs;
             svmAfter.NumberOfOutputs = dataAfter.NumberOfOutputs;
@@ -141,15 +185,8 @@ namespace Classifier
 
             return svmAfter;
         }
-        public static void WritePercentage<C,T,K,A>(Tuple<C,T,K,A>[] elements,string path)
-        {
-            using (StreamWriter sw = new StreamWriter(path, false))
-            {
-                for(int i = 0; i < elements.Length; i++)
-                {
-                    sw.WriteLine(elements[i].Item1+"\t"+elements[i].Item2+"\t"+elements[i].Item3);
-                }
-            }
-        }
+
+
+
     }
 }

@@ -33,8 +33,10 @@
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.trackBar2 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -85,11 +87,24 @@
             this.label1.Text = "time: ";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // trackBar2
+            // 
+            this.trackBar2.Location = new System.Drawing.Point(526, 10);
+            this.trackBar2.Maximum = 100;
+            this.trackBar2.Minimum = 1;
+            this.trackBar2.Name = "trackBar2";
+            this.trackBar2.Size = new System.Drawing.Size(182, 45);
+            this.trackBar2.TabIndex = 5;
+            this.trackBar2.TickFrequency = 10;
+            this.trackBar2.Value = 30;
+            this.trackBar2.Scroll += new System.EventHandler(this.trackBar2_Scroll);
+            // 
             // ScanForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 661);
+            this.Controls.Add(this.trackBar2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.trackBar1);
@@ -99,6 +114,7 @@
             this.Text = "ScanForm";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -111,5 +127,6 @@
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TrackBar trackBar2;
     }
 }
