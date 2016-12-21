@@ -49,6 +49,18 @@ namespace Classifier
             progressValue = 0;
             pb.Value = progressValue;
         }
+
+        private void Scanning_Click(object sender, EventArgs e)
+        {
+            string filename;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                filename = openFileDialog1.FileName;
+                ScanForm scanForm = new ScanForm(filename);
+                scanForm.Show();
+            }
+        }
+
         private void addAllImagesToDBToolStripMenuItem_Click(object sender, EventArgs e)
         {
             humanList = new List<Human>();

@@ -40,6 +40,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
+            this.Scanning = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -105,14 +106,14 @@
             // trainHumansToolStripMenuItem
             // 
             this.trainHumansToolStripMenuItem.Name = "trainHumansToolStripMenuItem";
-            this.trainHumansToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.trainHumansToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.trainHumansToolStripMenuItem.Text = "trainHumans";
             this.trainHumansToolStripMenuItem.Click += new System.EventHandler(this.trainHumansToolStripMenuItem_Click_1);
             // 
             // testImageToolStripMenuItem
             // 
             this.testImageToolStripMenuItem.Name = "testImageToolStripMenuItem";
-            this.testImageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.testImageToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.testImageToolStripMenuItem.Text = "test image";
             this.testImageToolStripMenuItem.Click += new System.EventHandler(this.testImageToolStripMenuItem_Click);
             // 
@@ -137,11 +138,22 @@
             this.label1.Size = new System.Drawing.Size(0, 24);
             this.label1.TabIndex = 4;
             // 
+            // Scanning
+            // 
+            this.Scanning.Location = new System.Drawing.Point(118, 42);
+            this.Scanning.Name = "Scanning";
+            this.Scanning.Size = new System.Drawing.Size(110, 30);
+            this.Scanning.TabIndex = 5;
+            this.Scanning.Text = "Scanning";
+            this.Scanning.UseVisualStyleBackColor = true;
+            this.Scanning.Click += new System.EventHandler(this.Scanning_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(344, 131);
+            this.Controls.Add(this.Scanning);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.menuStrip1);
@@ -168,6 +180,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button Scanning;
     }
 }
 

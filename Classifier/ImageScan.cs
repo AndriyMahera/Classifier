@@ -24,6 +24,7 @@ namespace Classifier
         public static Rectangle cropRect;
 
         public static int Counter = 0;
+        public static int progressValue = 0;
 
         public static void ImageScanning(System.Drawing.Image image, int step)
         {
@@ -37,6 +38,8 @@ namespace Classifier
         public static void AllPassesOfWindow(System.Drawing.Image src, int step)
         {
             tuple.Clear();
+            progressValue=0;
+            Counter=0;
             Counter = 0;
             int width = 64;
             int height = 128;
@@ -77,6 +80,13 @@ namespace Classifier
                         newImage.Save(@"Output\image_" + Counter + ".png");
                     }
                     Counter += 1;
+
+                    if (Counter%(ScanForm.countIter/100)==0)
+                    {
+                        progressValue++;
+                        if (progressValue<=100) ScanForm.pb.Value=progressValue;
+                        System.Threading.Thread.Sleep(10);
+                    }
                 }
             }
         }

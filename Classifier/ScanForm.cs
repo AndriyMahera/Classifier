@@ -15,6 +15,8 @@ namespace Classifier
     {
         private Image image;
         private string path="";
+        public static int countIter;
+        public static ProgressBar pb;
         public ScanForm(string path)
         {
             InitializeComponent();
@@ -24,15 +26,25 @@ namespace Classifier
             trackBar2.Minimum = 1;
             trackBar2.Value = 1;
 
-            //image2 = ;
+            pb = progressBar1;
+            pb.Minimum=0;
+            pb.Maximum=100;
+            pb.Value=0;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             int step = trackBar1.Value;
-            
+            countIter = getIterationCount(step);
+
+
             Stopwatch stopwatch = Stopwatch.StartNew();
-            ImageScan.ImageScanning((Bitmap)image, step);
+            try
+            {
+                ImageScan.ImageScanning((Bitmap)image, step);
+            }catch (Exception ee) {
+                Console.WriteLine(ee);
+            }
 
             stopwatch.Stop();
             label1.Text = "time: "+stopwatch.ElapsedMilliseconds/1000+" sec";
@@ -47,6 +59,27 @@ namespace Classifier
             trackBar2.Maximum = ImageScan.rectangleList.Count;
             pictureBox1.Refresh();
 
+        }
+
+        public int getIterationCount(int step)
+        {
+            int count = 0;
+            int width = 64;
+            int height = 128;
+
+            while (width < image.Width && height < image.Height)
+            {
+                for (int i = 0; i < image.Height - height; i+=step)
+                {
+                    for (int j = 0; j < image.Width - width; j+=step)
+                    {
+                        count++;
+                    }
+                }
+                width=(int)Math.Round(width*1.5);
+                height = (int)Math.Round(height * 1.5);
+            }
+            return count;
         }
 
         private void trackBar2_Scroll(object sender, EventArgs e)
@@ -67,5 +100,6 @@ namespace Classifier
             pictureBox1.Refresh();
 
         }
+
     }
 }

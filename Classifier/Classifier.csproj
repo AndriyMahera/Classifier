@@ -128,7 +128,6 @@
     <Compile Include="HumanModel.cs" />
     <Compile Include="ImageFunctions.cs" />
     <Compile Include="ImageScan.cs" />
-    <Compile Include="LogisticGradient.cs" />
     <Compile Include="Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
